@@ -1,83 +1,51 @@
 import {
-  BlockEvent,
   Finding,
-  Initialize,
-  HandleBlock,
   HandleTransaction,
-  HandleAlert,
-  AlertEvent,
   TransactionEvent,
   FindingSeverity,
   FindingType,
 } from "forta-agent";
+import { botsParams, inputType } from "./utils";
 
-export const ERC20_TRANSFER_EVENT =
-  "event Transfer(address indexed from, address indexed to, uint256 value)";
-export const TETHER_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-export const TETHER_DECIMALS = 6;
-let findingsCount = 0;
+export function provideTransactionHandler(botsParams: inputType):HandleTransaction {
+  return async (txEvent: TransactionEvent): Promise<Finding[]> => {
+    const findings: Finding[] = [];
+    if (txEvent.from != botsParams.deployerAddress.toLocaleLowerCase())
+      return findings;
+    if (txEvent.to != botsParams.proxyAddress.toLocaleLowerCase())
+      return findings;
 
-const handleTransaction: HandleTransaction = async (
-  txEvent: TransactionEvent
-) => {
-  const findings: Finding[] = [];
+    const filteredCreateAgentLog = txEvent.filterFunction(
+      botsParams.createEventAgent,
+      botsParams.proxyAddress
+    );
 
-  // limiting this agent to emit only 5 findings so that the alert feed is not spammed
-  if (findingsCount >= 5) return findings;
+    filteredCreateAgentLog.forEach((createAgentLog) => {
+      const { agentId, metadata,owner, chainIds } = createAgentLog.args;
 
-  // filter the transaction logs for Tether transfer events
-  const tetherTransferEvents = txEvent.filterLog(
-    ERC20_TRANSFER_EVENT,
-    TETHER_ADDRESS
-  );
-
-  tetherTransferEvents.forEach((transferEvent) => {
-    // extract transfer event arguments
-    const { to, from, value } = transferEvent.args;
-    // shift decimals of transfer value
-    const normalizedValue = value.div(10 ** TETHER_DECIMALS);
-
-    // if more than 10,000 Tether were transferred, report it
-    if (normalizedValue.gt(10000)) {
       findings.push(
         Finding.fromObject({
-          name: "High Tether Transfer",
-          description: `High amount of USDT transferred: ${normalizedValue}`,
-          alertId: "FORTA-1",
-          severity: FindingSeverity.Low,
+          name: "Nethermind Forta-Bot-Deployer Detector",
+          description: `Forta-Bots Dectector:${agentId}`,
+          alertId: "NFD-1",
+          severity: FindingSeverity.Info,
           type: FindingType.Info,
+          protocol: "Nethermind",
           metadata: {
-            to,
-            from,
+            agentId: agentId.toString(),
+            metaData:metadata,
+            owner,
+            chainIds: chainIds.toString(),
           },
         })
       );
-      findingsCount++;
-    }
-  });
+    });
+    return findings;
+  };
+}
 
-  return findings;
-};
 
-// const initialize: Initialize = async () => {
-//   // do some initialization on startup e.g. fetch data
-// }
 
-// const handleBlock: HandleBlock = async (blockEvent: BlockEvent) => {
-//   const findings: Finding[] = [];
-//   // detect some block condition
-//   return findings;
-// }
-
-// const handleAlert: HandleAlert = async (alertEvent: AlertEvent) => {
-//   const findings: Finding[] = [];
-//   // detect some alert condition
-//   return findings;
-// }
-
-export default {
-  // initialize,
-  handleTransaction,
-  // handleBlock,
-  // handleAlert
-};
+export  default {
+  handleTransaction: provideTransactionHandler(botsParams)
+}
