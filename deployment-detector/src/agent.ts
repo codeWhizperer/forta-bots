@@ -1,27 +1,16 @@
-import {
-  Finding,
-  HandleTransaction,
-  TransactionEvent,
-  FindingSeverity,
-  FindingType,
-} from "forta-agent";
+import { Finding, HandleTransaction, TransactionEvent, FindingSeverity, FindingType } from "forta-agent";
 import { botsParams, inputType } from "./utils";
 
-export function provideTransactionHandler(botsParams: inputType):HandleTransaction {
+export function provideTransactionHandler(botsParams: inputType): HandleTransaction {
   return async (txEvent: TransactionEvent): Promise<Finding[]> => {
     const findings: Finding[] = [];
-    if (txEvent.from != botsParams.deployerAddress.toLocaleLowerCase())
-      return findings;
-    if (txEvent.to != botsParams.proxyAddress.toLocaleLowerCase())
-      return findings;
+    if (txEvent.from != botsParams.deployerAddress.toLocaleLowerCase()) return findings;
+    if (txEvent.to != botsParams.proxyAddress.toLocaleLowerCase()) return findings;
 
-    const filteredCreateAgentLog = txEvent.filterFunction(
-      botsParams.createEventAgent,
-      botsParams.proxyAddress
-    );
+    const filteredCreateAgentLog = txEvent.filterFunction(botsParams.createEventAgent, botsParams.proxyAddress);
 
     filteredCreateAgentLog.forEach((createAgentLog) => {
-      const { agentId, metadata,owner, chainIds } = createAgentLog.args;
+      const { agentId, metadata, owner, chainIds } = createAgentLog.args;
 
       findings.push(
         Finding.fromObject({
@@ -33,7 +22,7 @@ export function provideTransactionHandler(botsParams: inputType):HandleTransacti
           protocol: "Nethermind",
           metadata: {
             agentId: agentId.toString(),
-            metaData:metadata,
+            metaData: metadata,
             owner,
             chainIds: chainIds.toString(),
           },
@@ -44,8 +33,6 @@ export function provideTransactionHandler(botsParams: inputType):HandleTransacti
   };
 }
 
-
-
-export  default {
-  handleTransaction: provideTransactionHandler(botsParams)
-}
+export default {
+  handleTransaction: provideTransactionHandler(botsParams),
+};
