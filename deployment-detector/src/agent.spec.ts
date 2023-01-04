@@ -15,8 +15,8 @@ const createMockArg = (agentId: number, owner: string, metaData: string, chainId
   };
 };
 
-const arg = createMockArg(1, createAddress("0x01"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [1, 137]);
-const arg2 = createMockArg(1, createAddress("0x01"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [1, 80001]);
+const mockarg = createMockArg(1, createAddress("0x01"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [1, 137]);
+const mockarg2 = createMockArg(1, createAddress("0x01"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [1, 80001]);
 
 describe("New bot deployment", () => {
   let handleTransaction: HandleTransaction;
@@ -42,7 +42,7 @@ describe("New bot deployment", () => {
       .addTraces({
         function: FORTA_CREATE_AGENT,
         to: botsParams.proxyAddress,
-        arguments: [arg.agentId, arg.owner, arg.metaData, arg.chainIds],
+        arguments: [mockarg.agentId, mockarg.owner, mockarg.metaData, mockarg.chainIds],
       });
     const findings: Finding[] = await handleTransaction(txEvent);
     expect(findings).toStrictEqual([]);
@@ -57,10 +57,10 @@ describe("New bot deployment", () => {
       .addTraces({
         function: FORTA_CREATE_AGENT,
         to: botsParams.proxyAddress,
-        arguments: [arg.agentId, arg.owner, arg.metaData, arg.chainIds],
+        arguments: [mockarg.agentId, mockarg.owner, mockarg.metaData, mockarg.chainIds],
       });
     const findings: Finding[] = await handleTransaction(txEvent);
-    const mockFinding = [createFinding(arg.agentId, arg.metaData, arg.owner, arg.chainIds)];
+    const mockFinding = [createFinding(mockarg.agentId, mockarg.metaData, mockarg.owner, mockarg.chainIds)];
     expect(findings).toStrictEqual(mockFinding);
   });
 });
