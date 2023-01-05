@@ -1,7 +1,8 @@
 {
   "name": "nethermind-forta-deployer-detector",
   "version": "0.0.1",
-  "description": "Forta-Bot-Detector",
+  "description": "Forta Bot to detect the deployment of new bots from Nethermind deployer",
+  "repository": "https://github.com/codeWhizperer/forta-bots/tree/master/deployment-detector",
   "chainIds": [
     137
   ],
