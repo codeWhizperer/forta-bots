@@ -7,18 +7,18 @@ This  monitors bot deployments from the Nethermind deployer address (0x88dC3a228
 - Polygon
 
 ## Alerts
-
-Describe each of the type of alerts fired by this agent
-
 - Nethermind Forta-Bot-Deployer Detector
   - Fired when Nethermind contract at : 0x88dc3a2284fa62e0027d6d6b1fcfdd2141a143b8 deploys an agent
   - Severity is always set to "info" 
   - Type is always set to "info" 
   - Metadata fields:
-     - agentId: agentId of the deployed agent
-     - metadata: ipfs of the metadat of the agent
-     - chainsIds: list of networks supported 
+
+     `agentId: Neth-Bot-Deployer-1`,
+
+     `owner: address to have ownership privileges`,
+
+    `chainIds: list of networks supported` 
 
 ## Test Data
 The bot behaviour can be verified with the following transaction:
-- tx: [https://polygonscan.com/tx/0x37c290a35092738932434962849c959e6e741f5f6a294400028e5f39402e7c11]
+- Transaction hash: (https://polygonscan.com/tx/0x75e0e9fb6894b6caa1251d62b2f7c4008e5443a0c8bc94c7d1ffb3fd3c3ad8fa)

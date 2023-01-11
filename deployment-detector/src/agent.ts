@@ -7,11 +7,10 @@ export function provideHandleTransaction(botsParams: inputType): HandleTransacti
     if (txEvent.from !== botsParams.deployerAddress.toLocaleLowerCase()) return findings;
     if (txEvent.to !== botsParams.proxyAddress.toLocaleLowerCase()) return findings;
 
-    const filteredCreateAgentLog = txEvent.filterFunction(botsParams.createEventAgent, botsParams.proxyAddress);
-
+    const filteredCreateAgentLog = txEvent.filterLog(botsParams.createEventAgent, botsParams.proxyAddress);
     filteredCreateAgentLog.forEach((createAgentLog) => {
-      const { agentId, owner, chainIds } = createAgentLog.args;
-      let finding = createFinding(agentId, owner, chainIds);
+      const { agentId, by , chainIds } = createAgentLog.args;
+      let finding = createFinding(agentId, by, chainIds);
       findings.push(finding);
     });
     return findings;
