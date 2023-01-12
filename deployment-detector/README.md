@@ -3,12 +3,12 @@
 ## Description
 This  monitors bot deployments from the Nethermind deployer address (0x88dC3a2284FA62e0027d6D6B1fCfDd2141a143b8)
 
-## Supported Chains
-
+## Supported ChainsS
 - Polygon
 
 ## Alerts
 - NETH-BOT-DEPLOYER
+S
   - Fired when Nethermind contract at: [0x88dc3a2284fa62e0027d6d6b1fcfdd2141a143b8](https://polygonscan.com/tx/0x88dc3a2284fa62e0027d6d6b1fcfdd2141a143b8) deploys a bot
   - Severity is always set to "info" 
   - Type is always set to "info" 
