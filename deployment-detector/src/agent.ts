@@ -4,12 +4,9 @@ import { botsParams, createFinding, inputType } from "./utils";
 export function provideHandleTransaction(botsParams: inputType): HandleTransaction {
   return async (txEvent: TransactionEvent): Promise<Finding[]> => {
     const findings: Finding[] = [];
-    if (txEvent.from !== botsParams.deployerAddress.toLocaleLowerCase()) return findings;
-    if (txEvent.to !== botsParams.proxyAddress.toLocaleLowerCase()) return findings;
-
     const filteredCreateAgentLogs = txEvent.filterLog(botsParams.createEventAgent, botsParams.proxyAddress);
     filteredCreateAgentLogs.forEach((createAgentLog) => {
-      const { agentId, by , chainIds } = createAgentLog.args;
+      const { agentId, by, chainIds } = createAgentLog.args;
       let finding = createFinding(agentId, by, chainIds);
       findings.push(finding);
     });

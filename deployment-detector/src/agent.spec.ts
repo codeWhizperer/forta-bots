@@ -65,7 +65,7 @@ describe("Nethermind deployer address bot test suite", () => {
     const txEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(mockDeployerAddress)
       .setTo(mockOtherFortaContract)
-      .addEventLog(FORTA_AGENT_EVENT, mockFortaAgentRegistry, [
+      .addEventLog(FORTA_AGENT_EVENT, mockOtherFortaContract, [
         mockarg.agentId,
         mockarg.owner,
         mockarg.metaData,
@@ -91,7 +91,7 @@ describe("Nethermind deployer address bot test suite", () => {
       Finding.fromObject({
         name: "Nethermind Forta-Bot-Deployer Detector",
         description: `monitors bot deployments from the Nethermind deployer address`,
-        alertId: "Neth-Bot-Deployer-1",
+        alertId: "NETH-BOT-DEPLOYER",
         severity: FindingSeverity.Info,
         type: FindingType.Info,
         protocol: "Forta",
@@ -129,7 +129,7 @@ describe("Nethermind deployer address bot test suite", () => {
       Finding.fromObject({
         name: "Nethermind Forta-Bot-Deployer Detector",
         description: `monitors bot deployments from the Nethermind deployer address`,
-        alertId: "Neth-Bot-Deployer-1",
+        alertId: "NETH-BOT-DEPLOYER",
         severity: FindingSeverity.Info,
         type: FindingType.Info,
         protocol: "Forta",
