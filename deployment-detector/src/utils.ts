@@ -11,11 +11,13 @@ export type inputType = {
   createEventAgent: string;
 };
 
+
 export const botsParams: inputType = {
   proxyAddress: FORTA_AGENT_REGISTRY,
   deployerAddress: NETHERMIND_DEPLOYER,
   createEventAgent: FORTA_AGENT_EVENT,
 };
+
 
 export const createFinding = (agentId: number, owner: string, chainIds: number[]) => {
   return Finding.fromObject({
