@@ -4,6 +4,7 @@
 This  monitors bot deployments from the Nethermind deployer address (0x88dC3a2284FA62e0027d6D6B1fCfDd2141a143b8)
 
 ## Supported Chains
+
 - Polygon
 
 ## Alerts
@@ -20,5 +21,6 @@ This  monitors bot deployments from the Nethermind deployer address (0x88dC3a228
     - `chainIds`: list of networks supported 
 
 ## Test Data
+
 The bot behaviour can be verified with the following transaction:
 - Transaction hash: (https://polygonscan.com/tx/0x75e0e9fb6894b6caa1251d62b2f7c4008e5443a0c8bc94c7d1ffb3fd3c3ad8fa)
