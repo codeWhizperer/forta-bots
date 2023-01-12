@@ -13,7 +13,7 @@ This  monitors bot deployments from the Nethermind deployer address (0x88dC3a228
   - Type is always set to "info" 
   - Metadata fields:
 
-     `agentId: Neth-Bot-Deployer-1`,
+     `agentId: NETH-BOT-DEPLOYER`,
 
      `owner: address to have ownership privileges`,
 

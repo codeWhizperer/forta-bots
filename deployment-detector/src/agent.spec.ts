@@ -144,7 +144,7 @@ describe("Nethermind deployer address bot test suite", () => {
       Finding.fromObject({
         name: "Nethermind Forta-Bot-Deployer Detector",
         description: "monitors bot deployments from the Nethermind deployer address",
-        alertId: "Neth-Bot-Deployer-1",
+        alertId: "NETH-BOT-DEPLOYER",
         severity: FindingSeverity.Info,
         type: FindingType.Info,
         protocol: "Forta",
