@@ -29,7 +29,9 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/nodemon": "^1.19.0",
+    "forta-agent-tools": "^3.2.2",
     "jest": "^27.0.6",
+    "lru-cache": "^7.14.1",
     "nodemon": "^2.0.8",
     "prettier": "^2.8.1",
     "ts-jest": "^27.0.3",
