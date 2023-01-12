@@ -2,7 +2,7 @@ import { Finding, HandleTransaction, TransactionEvent } from "forta-agent";
 import { botsParams, createFinding, inputType } from "./utils";
 
 export function provideHandleTransaction(botsParams: inputType): HandleTransaction {
-  
+
   return async (txEvent: TransactionEvent): Promise<Finding[]> => {
     const findings: Finding[] = [];
     const filteredCreateAgentLogs = txEvent.filterLog(botsParams.createEventAgent, botsParams.proxyAddress);
@@ -14,7 +14,6 @@ export function provideHandleTransaction(botsParams: inputType): HandleTransacti
     return findings;
   };
 }
-
 export default {
   handleTransaction: provideHandleTransaction(botsParams),
 };
