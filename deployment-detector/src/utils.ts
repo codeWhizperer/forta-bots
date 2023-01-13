@@ -1,4 +1,4 @@
-import {  Finding, FindingSeverity, FindingType } from "forta-agent";
+import { Finding, FindingSeverity, FindingType } from "forta-agent";
 
 export const NETHERMIND_DEPLOYER: string = "0x88dC3a2284FA62e0027d6D6B1fCfDd2141a143b8";
 export const FORTA_AGENT_REGISTRY: string = "0x61447385B019187daa48e91c55c02AF1F1f3F863";
@@ -11,13 +11,11 @@ export type inputType = {
   createEventAgent: string;
 };
 
-
 export const botsParams: inputType = {
   proxyAddress: FORTA_AGENT_REGISTRY,
   deployerAddress: NETHERMIND_DEPLOYER,
   createEventAgent: FORTA_AGENT_EVENT,
 };
-
 
 export const createFinding = (agentId: number, owner: string, chainIds: number[]) => {
   return Finding.fromObject({
@@ -29,9 +27,8 @@ export const createFinding = (agentId: number, owner: string, chainIds: number[]
     protocol: "Forta",
     metadata: {
       agentId: agentId.toString(),
-      by:owner,
+      by: owner,
       chainIds: chainIds.toString(),
     },
   });
 };
-

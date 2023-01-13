@@ -11,9 +11,9 @@ export type inputType = {
 };
 
 const otherDeployerAddress = createAddress("0x01");
-const mockOtherFortaContract: string = "0xB50d3960a49120D0A6B543E7295cAE6C78d07967";
-const mockDeployerAddress: string = "0x88dC3a2284FA62e0027d6D6B1fCfDd2141a143b8";
-const mockFortaAgentRegistry: string = "0x61447385B019187daa48e91c55c02AF1F1f3F863";
+const mockOtherFortaContract: string = createAddress("0x02");
+const mockDeployerAddress: string = createAddress("0x03");
+const mockFortaAgentRegistry: string = createAddress("0x04");
 
 export const mockBotParams: inputType = {
   proxyAddress: mockFortaAgentRegistry,
@@ -30,9 +30,9 @@ const createMockArg = (agentId: number, owner: string, metaData: string, chainId
   };
 };
 
-const mockarg = createMockArg(1, createAddress("0x02"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [137]);
+const mockarg = createMockArg(1, createAddress("0x05"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6ij", [137]);
 
-const mockarg2 = createMockArg(2, createAddress("0x03"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6if", [137]);
+const mockarg2 = createMockArg(2, createAddress("0x06"), "QmPkydGrmSK2roUJeNzsdC3e7Yetr7zb7UNdmiXyRUM6if", [137]);
 
 describe("Nethermind deployer address bot test suite", () => {
   let handleTransaction: HandleTransaction;
@@ -79,7 +79,7 @@ describe("Nethermind deployer address bot test suite", () => {
     const txEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(mockDeployerAddress)
       .setTo(mockFortaAgentRegistry)
-      .addEventLog(FORTA_AGENT_EVENT, FORTA_AGENT_REGISTRY, [
+      .addEventLog(FORTA_AGENT_EVENT, mockFortaAgentRegistry, [
         mockarg.agentId,
         mockarg.owner,
         mockarg.metaData,
@@ -108,23 +108,20 @@ describe("Nethermind deployer address bot test suite", () => {
     const txEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(mockDeployerAddress)
       .setTo(mockFortaAgentRegistry)
-      .addEventLog(FORTA_AGENT_EVENT, FORTA_AGENT_REGISTRY, [
+      .addEventLog(FORTA_AGENT_EVENT, mockFortaAgentRegistry, [
         mockarg.agentId,
         mockarg.owner,
         mockarg.metaData,
         mockarg.chainIds,
-      ]);
-    const txEvent2: TransactionEvent = new TestTransactionEvent()
-      .setFrom(mockDeployerAddress)
-      .setTo(mockFortaAgentRegistry)
-      .addEventLog(FORTA_AGENT_EVENT, FORTA_AGENT_REGISTRY, [
+      ])
+      .addEventLog(FORTA_AGENT_EVENT, mockFortaAgentRegistry, [
         mockarg2.agentId,
         mockarg2.owner,
         mockarg2.metaData,
         mockarg2.chainIds,
       ]);
+
     const findings = await handleTransaction(txEvent);
-    const findings2 = await handleTransaction(txEvent2);
     expect(findings).toStrictEqual([
       Finding.fromObject({
         name: "Nethermind Forta-Bot-Deployer Detector",
@@ -139,8 +136,6 @@ describe("Nethermind deployer address bot test suite", () => {
           chainIds: mockarg.chainIds.toString(),
         },
       }),
-    ]);
-    expect(findings2).toStrictEqual([
       Finding.fromObject({
         name: "Nethermind Forta-Bot-Deployer Detector",
         description: "monitors bot deployments from the Nethermind deployer address",
