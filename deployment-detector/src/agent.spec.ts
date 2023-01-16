@@ -51,7 +51,7 @@ describe("Nethermind deployer address bot test suite", () => {
     const txEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(otherDeployerAddress)
       .setTo(mockFortaAgentRegistry)
-      .addEventLog(FORTA_AGENT_EVENT, mockOtherFortaContract, [
+      .addEventLog(FORTA_AGENT_EVENT, mockFortaAgentRegistry, [
         mockarg.agentId,
         mockarg.owner,
         mockarg.metaData,
