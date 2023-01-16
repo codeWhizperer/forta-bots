@@ -1,51 +1,19 @@
-import {
-  Finding,
-  HandleTransaction,
-  TransactionEvent,
-  FindingSeverity,
-  FindingType,
-} from "forta-agent";
-import { botsParams, inputType } from "./utils";
+import { Finding, HandleTransaction, TransactionEvent } from "forta-agent";
+import { botsParams, createFinding, inputType } from "./utils";
 
-export function provideTransactionHandler(botsParams: inputType):HandleTransaction {
+export function provideHandleTransaction(botsParams: inputType): HandleTransaction {
   return async (txEvent: TransactionEvent): Promise<Finding[]> => {
     const findings: Finding[] = [];
-    if (txEvent.from != botsParams.deployerAddress.toLocaleLowerCase())
-      return findings;
-    if (txEvent.to != botsParams.proxyAddress.toLocaleLowerCase())
-      return findings;
-
-    const filteredCreateAgentLog = txEvent.filterFunction(
-      botsParams.createEventAgent,
-      botsParams.proxyAddress
-    );
-
-    filteredCreateAgentLog.forEach((createAgentLog) => {
-      const { agentId, metadata,owner, chainIds } = createAgentLog.args;
-
-      findings.push(
-        Finding.fromObject({
-          name: "Nethermind Forta-Bot-Deployer Detector",
-          description: `Forta-Bots Dectector:${agentId}`,
-          alertId: "NFD-1",
-          severity: FindingSeverity.Info,
-          type: FindingType.Info,
-          protocol: "Nethermind",
-          metadata: {
-            agentId: agentId.toString(),
-            metaData:metadata,
-            owner,
-            chainIds: chainIds.toString(),
-          },
-        })
-      );
+    if (txEvent.from !== botsParams.deployerAddress.toLocaleLowerCase()) return findings;
+    const filteredCreateAgentLogs = txEvent.filterLog(botsParams.createEventAgent, botsParams.proxyAddress);
+    filteredCreateAgentLogs.forEach((createAgentLog) => {
+      const { agentId, by, chainIds } = createAgentLog.args;
+      let finding = createFinding(agentId, by, chainIds);
+      findings.push(finding);
     });
     return findings;
   };
 }
-
-
-
-export  default {
-  handleTransaction: provideTransactionHandler(botsParams)
-}
+export default {
+  handleTransaction: provideHandleTransaction(botsParams),
+};
